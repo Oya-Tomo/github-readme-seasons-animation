@@ -1,0 +1,39 @@
+name: Update seasons
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily at 00:10 UTC
+    - cron: "10 0 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate SVG
+        run: |
+          python main.py --output assets/seasons.svg
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/seasons.svg
+          git commit -m "chore: update seasons"
+          git push
