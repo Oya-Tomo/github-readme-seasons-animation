@@ -3,6 +3,8 @@
 Generate animated SVGs that represent the seasons for your GitHub profile README.
 The color scheme changes based on the season (spring/summer/autumn/winter), with gentle swaying leaf animations.
 
+![Image of seasons animation](./assets/seasons.svg)
+
 ### Local Generation
 
 ```bash
@@ -32,4 +34,3 @@ For reliable display on GitHub, use the raw URL:
 
 This repository includes a workflow that periodically regenerates and commits `assets/seasons.svg`.
 If you fork this repository, make sure to enable Actions.
-
