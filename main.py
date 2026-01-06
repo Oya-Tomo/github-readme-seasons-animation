@@ -186,6 +186,145 @@ def generate_snowflake(
     </circle>"""
 
 
+def generate_snowman(x: float, ground_y: float, snowman_id: int) -> str:
+    """Generate a cute snowman with gentle swaying animation."""
+    # Snowman body sizes (fixed size)
+    bottom_r = 22
+    middle_r = bottom_r * 0.7
+    top_r = middle_r * 0.65
+
+    # Calculate positions
+    bottom_y = ground_y - bottom_r * 0.7
+    middle_y = bottom_y - bottom_r - middle_r * 0.8
+    top_y = middle_y - middle_r - top_r * 0.8
+
+    # Hat dimensions
+    hat_width = top_r * 1.8
+    hat_height = top_r * 1.2
+    hat_brim = top_r * 2.2
+
+    # Animation timing
+    sway_duration = 4
+
+    return f"""
+    <g id="snowman-{snowman_id}" transform-origin="{x}px {ground_y}px">
+        <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="-2;2;-2"
+            dur="{sway_duration}s"
+            repeatCount="indefinite"
+            keyTimes="0;0.5;1"
+            calcMode="spline"
+            keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+        />
+        <!-- Bottom body -->
+        <circle cx="{x}" cy="{bottom_y}" r="{bottom_r}" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+        <!-- Middle body -->
+        <circle cx="{x}" cy="{middle_y}" r="{middle_r}" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+        <!-- Top body (head) -->
+        <circle cx="{x}" cy="{top_y}" r="{top_r}" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+        
+        <!-- Eyes -->
+        <circle cx="{x - top_r * 0.35}" cy="{top_y - top_r * 0.2}" r="{top_r * 0.12}" fill="#333333"/>
+        <circle cx="{x + top_r * 0.35}" cy="{top_y - top_r * 0.2}" r="{top_r * 0.12}" fill="#333333"/>
+        
+        <!-- Carrot nose -->
+        <polygon points="{x},{top_y + top_r * 0.05} {x + top_r * 0.8},{top_y + top_r * 0.15} {x},{top_y + top_r * 0.25}" fill="#ff7043"/>
+        
+        <!-- Smile (coal dots) -->
+        <circle cx="{x - top_r * 0.4}" cy="{top_y + top_r * 0.35}" r="{top_r * 0.08}" fill="#333333"/>
+        <circle cx="{x - top_r * 0.2}" cy="{top_y + top_r * 0.42}" r="{top_r * 0.08}" fill="#333333"/>
+        <circle cx="{x}" cy="{top_y + top_r * 0.45}" r="{top_r * 0.08}" fill="#333333"/>
+        <circle cx="{x + top_r * 0.2}" cy="{top_y + top_r * 0.42}" r="{top_r * 0.08}" fill="#333333"/>
+        <circle cx="{x + top_r * 0.4}" cy="{top_y + top_r * 0.35}" r="{top_r * 0.08}" fill="#333333"/>
+        
+        <!-- Buttons -->
+        <circle cx="{x}" cy="{middle_y - middle_r * 0.3}" r="{middle_r * 0.12}" fill="#333333"/>
+        <circle cx="{x}" cy="{middle_y + middle_r * 0.1}" r="{middle_r * 0.12}" fill="#333333"/>
+        <circle cx="{x}" cy="{middle_y + middle_r * 0.5}" r="{middle_r * 0.12}" fill="#333333"/>
+        
+        <!-- Hat -->
+        <rect x="{x - hat_width/2}" y="{top_y - top_r - hat_height}" width="{hat_width}" height="{hat_height}" fill="#333333" rx="2"/>
+        <rect x="{x - hat_brim/2}" y="{top_y - top_r - 2}" width="{hat_brim}" height="4" fill="#333333"/>
+        
+        <!-- Scarf -->
+        <rect x="{x - middle_r * 0.9}" y="{middle_y - middle_r - 2}" width="{middle_r * 1.8}" height="6" fill="#e53935" rx="2"/>
+        <rect x="{x + middle_r * 0.5}" y="{middle_y - middle_r + 1}" width="5" height="{middle_r * 0.6}" fill="#e53935" rx="2"/>
+    </g>"""
+
+
+def generate_kamakura(x: float, ground_y: float, kamakura_id: int) -> str:
+    """Generate a kamakura (Japanese snow hut) with warm light inside."""
+    # Kamakura dimensions
+    width = random.uniform(60, 80)
+    height = width * 0.75
+
+    # Entrance dimensions (door shape)
+    entrance_width = width * 0.30
+    entrance_height = height * 0.55
+
+    # Light animation
+    glow_duration = random.uniform(2, 4)
+
+    return f"""
+    <g id="kamakura-{kamakura_id}">
+        <!-- Kamakura dome (rounded triangle shape using path) -->
+        <path
+            d="M {x - width/2} {ground_y}
+               Q {x - width/2} {ground_y - height * 0.6} {x - width * 0.25} {ground_y - height * 0.85}
+               Q {x} {ground_y - height * 1.1} {x + width * 0.25} {ground_y - height * 0.85}
+               Q {x + width/2} {ground_y - height * 0.6} {x + width/2} {ground_y}
+               Z"
+            fill="#ffffff"
+            stroke="#e0e0e0"
+            stroke-width="1"
+        />
+        
+        <!-- Entrance (door shape - rounded top rectangle) -->
+        <path
+            d="M {x - entrance_width/2} {ground_y}
+               L {x - entrance_width/2} {ground_y - entrance_height * 0.7}
+               Q {x - entrance_width/2} {ground_y - entrance_height} {x} {ground_y - entrance_height}
+               Q {x + entrance_width/2} {ground_y - entrance_height} {x + entrance_width/2} {ground_y - entrance_height * 0.7}
+               L {x + entrance_width/2} {ground_y}
+               Z"
+            fill="#3a3a3a"
+        />
+        <!-- Inner depth layer -->
+        <path
+            d="M {x - entrance_width/2 + 2} {ground_y}
+               L {x - entrance_width/2 + 2} {ground_y - entrance_height * 0.65}
+               Q {x - entrance_width/2 + 2} {ground_y - entrance_height + 3} {x} {ground_y - entrance_height + 3}
+               Q {x + entrance_width/2 - 2} {ground_y - entrance_height + 3} {x + entrance_width/2 - 2} {ground_y - entrance_height * 0.65}
+               L {x + entrance_width/2 - 2} {ground_y}
+               Z"
+            fill="#4a4a4a"
+        />
+        
+        <!-- Warm light glow from inside -->
+        <ellipse cx="{x}" cy="{ground_y - entrance_height * 0.4}" rx="{entrance_width * 0.35}" ry="{entrance_height * 0.3}" fill="#ffcc80" opacity="0.6">
+            <animate
+                attributeName="opacity"
+                values="0.4;0.7;0.4"
+                dur="{glow_duration}s"
+                repeatCount="indefinite"
+            />
+        </ellipse>
+        <ellipse cx="{x}" cy="{ground_y - entrance_height * 0.4}" rx="{entrance_width * 0.2}" ry="{entrance_height * 0.18}" fill="#ffab40" opacity="0.5">
+            <animate
+                attributeName="opacity"
+                values="0.3;0.6;0.3"
+                dur="{glow_duration * 0.7}s"
+                repeatCount="indefinite"
+            />
+        </ellipse>
+        
+        <!-- Small snow pile at entrance -->
+        <ellipse cx="{x}" cy="{ground_y + 2}" rx="{entrance_width * 0.5}" ry="4" fill="#ffffff"/>
+    </g>"""
+
+
 def generate_snow_ground(width: float, height: float) -> str:
     """Generate snowy ground with gentle bumps."""
     bumps = ""
@@ -1024,9 +1163,12 @@ class WinterRenderer(SeasonRenderer):
         elements = []
         # Snow-covered ground (no grass)
         elements.append(generate_snow_ground(self.width, self.height))
+        # Kamakura (snow hut)
+        elements.append(self._generate_kamakura())
+        # Snowmen
+        elements.append(self._generate_snowmen())
         # Falling snow
         elements.append(self._generate_falling_snow())
-        # TODO: Add winter-specific elements (snowman, icicles, etc.)
         return elements
 
     def _generate_falling_snow(self) -> str:
@@ -1041,6 +1183,28 @@ class WinterRenderer(SeasonRenderer):
 
         snow_group.append("    </g>")
         return "\n".join(snow_group)
+
+    def _generate_kamakura(self) -> str:
+        """Generate kamakura (Japanese snow huts) on the right side."""
+        kamakura_group = ['    <g id="kamakura-layer">']
+
+        # Place 1 kamakura on the far right side
+        x = random.uniform(self.width * 0.78, self.width * 0.92)
+        kamakura_group.append(generate_kamakura(x, self.height - 10, 0))
+
+        kamakura_group.append("    </g>")
+        return "\n".join(kamakura_group)
+
+    def _generate_snowmen(self) -> str:
+        """Generate a snowman on the left side."""
+        snowmen_group = ['    <g id="snowmen-layer">']
+
+        # Place 1 snowman on the far left side
+        x = self.width * 0.12
+        snowmen_group.append(generate_snowman(x, self.height - 5, 0))
+
+        snowmen_group.append("    </g>")
+        return "\n".join(snowmen_group)
 
 
 # Registry of season renderers
